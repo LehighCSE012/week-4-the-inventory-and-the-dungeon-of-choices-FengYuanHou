@@ -1,4 +1,4 @@
-"""This is an enhanced text-based adventure game with inventory and dungeon exploration."""
+"""Enhanced text-based adventure game with inventory and dungeon exploration."""
 import random
 
 def display_player_status(player_health):
@@ -6,7 +6,8 @@ def display_player_status(player_health):
 
 def acquire_item(inventory, item):
     inventory.append(item)
-    print(f"You acquired a {item}!")
+    print(f"You found a {item} in the room.")
+    return inventory
 
 def display_inventory(inventory):
     if not inventory:
@@ -17,25 +18,20 @@ def display_inventory(inventory):
             print(f"{i}. {item}")
 
 def enter_dungeon(player_health, inventory, dungeon_rooms):
-    for room in dungeon_rooms:
-        description, item, challenge_type, outcome = room
+    for description, item, challenge_type, outcome in dungeon_rooms:
         print(f"You enter: {description}")
         if item:
             acquire_item(inventory, item)
         if challenge_type == "none":
             print("There doesn't seem to be a challenge in this room. You move on.")
         else:
-            action = input(f"You encounter a {challenge_type}! Do you want to tackle it? (yes/no): ").lower()
-            if action == "yes":
+            action = input(f"You encounter a {challenge_type}! Do you want to solve/disarm or skip/bypass it? ").lower()
+            if action in ["solve", "disarm"]:
                 success = random.choice([True, False])
-                if success:
-                    print(outcome[0])
-                    player_health = max(player_health + outcome[2], 0)
-                else:
-                    print(outcome[1])
-                    player_health = max(player_health + outcome[2], 0)
-                    if player_health == 0:
-                        print("You are barely alive!")
+                print(outcome[0] if success else outcome[1])
+                player_health = max(player_health + outcome[2], 0)
+                if player_health == 0:
+                    print("You are barely alive!")
             else:
                 print("You chose to avoid the challenge.")
         display_inventory(inventory)
@@ -46,15 +42,15 @@ def main():
     player_health = 100
     inventory = []
     dungeon_rooms = [
-        ("A dusty old library", "key", "puzzle", ("You solved the puzzle!", "The puzzle remains unsolved.", -5)),
-        ("A narrow passage with a creaky floor", None, "trap", ("You skillfully avoid the trap!", "You triggered a trap!", -10)),
+        ("A dusty old library", "key", "puzzle", ("Puzzle solved!", "Puzzle failed!", -5)),
+        ("A narrow passage with a creaky floor", None, "trap", ("Trap disarmed!", "You triggered the trap!", -10)),
         ("A grand hall with a shimmering pool", "healing potion", "none", None),
-        ("A small room with a locked chest", "treasure", "puzzle", ("You cracked the code!", "The chest remains stubbornly locked.", -5))
+        ("A small room with a locked chest", "treasure", "puzzle", ("Chest opened!", "Chest locked!", -5))
     ]
     player_health, inventory = enter_dungeon(player_health, inventory, dungeon_rooms)
     try:
         dungeon_rooms[0] = ("Modified room", "new item", "trap", ("Success!", "Failure!", -5))
-    except TypeError as e:
+    except TypeError:
         print("Tuples are immutable! Cannot modify room data.")
 
 if __name__ == "__main__":
