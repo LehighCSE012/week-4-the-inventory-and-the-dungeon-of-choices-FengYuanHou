@@ -54,10 +54,13 @@ def main():
     player_health = 100
     inventory = []
     dungeon_rooms = [
-        ("A dusty library", "key", "puzzle", ("Puzzle solved!", "Puzzle failed!", -5)),
-        ("A creaky floor passage", None, "trap", ("Trap disarmed!", "You triggered the trap!", -10)),
+        ("A dusty library", "key", "puzzle",\
+          ("Puzzle solved!", "Puzzle failed!", -5)),
+        ("A creaky floor passage", None, "trap", \
+         ("Trap disarmed!", "You triggered the trap!", -10)),
         ("A shimmering pool hall", "potion", "none", None),
-        ("A locked chest room", "treasure", "puzzle", ("Chest opened!", "Chest locked!", -5))
+        ("A locked chest room", "treasure", "puzzle",\
+          ("Chest opened!", "Chest locked!", -5))
     ]
     player_health, inventory = enter_dungeon(player_health, inventory, dungeon_rooms)
     try:
