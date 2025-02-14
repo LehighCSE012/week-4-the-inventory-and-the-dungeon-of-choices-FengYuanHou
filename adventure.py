@@ -28,20 +28,22 @@ def enter_dungeon(player_health, inventory, dungeon_rooms):
             acquire_item(inventory, item)
         if challenge_type == "none":
             print("There doesn't seem to be a challenge in this room. You move on.")
-        elif challenge_type == "trap":
-            print("You see a potential trap!")
-            action = input("Do you want to disarm or bypass it? ").lower()
         else:
-            action = input("You encounter a challenge! Solve or skip? ").lower()
+            action = None  # Ensure action is always assigned
+            if challenge_type == "trap":
+                print("You see a potential trap!")
+                action = input("Do you want to disarm or bypass it? ").lower()
+            elif challenge_type == "puzzle":
+                action = input("You encounter a puzzle! Solve or skip? ").lower()
 
-        if action in ["solve", "disarm"]:
-            success = random.choice([True, False])
-            print(outcome[0] if success else outcome[1])
-            player_health = max(player_health + outcome[2], 0)
-            if player_health == 0:
-                print("You are barely alive!")
-        else:
-            print("You chose to avoid the challenge.")
+            if action in ["solve", "disarm"]:
+                success = random.choice([True, False])
+                print(outcome[0] if success else outcome[1])
+                player_health = max(player_health + outcome[2], 0)
+                if player_health == 0:
+                    print("You are barely alive!")
+            else:
+                print("You chose to avoid the challenge.")
 
         display_inventory(inventory)
     display_player_status(player_health)
