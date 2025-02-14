@@ -29,12 +29,12 @@ def enter_dungeon(player_health, inventory, dungeon_rooms):
         if challenge_type == "none":
             print("There doesn't seem to be a challenge in this room. You move on.")
         else:
-            action = None  
+            action = None
             if challenge_type == "trap":
                 print("You see a potential trap!")
-                action = input("Do you want to disarm or bypass it? ").lower()
+                action = input("Do you want to disarm or bypass it?").lower()
             elif challenge_type == "puzzle":
-                action = input("You encounter a puzzle! Solve or skip? ").lower()
+                action = input("You encounter a puzzle! Solve or skip?").lower()
 
             if action in ["solve", "disarm"]:
                 success = random.choice([True, False])
@@ -54,13 +54,10 @@ def main():
     player_health = 100
     inventory = []
     dungeon_rooms = [
-        ("A dusty library", "key", "puzzle", \
-         ("Puzzle solved!", "Puzzle failed!", -5)),
-        ("A creaky floor passage", None, "trap",\
-         ("Trap disarmed!", "You triggered the trap!", -10)),
+        ("A dusty library", "key", "puzzle", ("Puzzle solved!", "Puzzle failed!", -5)),
+        ("A creaky floor passage", None, "trap", ("Trap disarmed!", "You triggered the trap!", -10)),
         ("A shimmering pool hall", "potion", "none", None),
-        ("A locked chest room", "treasure", "puzzle", \
-         ("Chest opened!", "Chest locked!", -5))
+        ("A locked chest room", "treasure", "puzzle", ("Chest opened!", "Chest locked!", -5))
     ]
     player_health, inventory = enter_dungeon(player_health, inventory, dungeon_rooms)
     try:
