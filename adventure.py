@@ -8,7 +8,7 @@ def display_player_status(player_health):
 def acquire_item(inventory, item):
     """Adds an item to the inventory and prints a message."""
     inventory.append(item)
-    print(f"You acquired a {item}!")
+    print(f"You found a {item} in the room.")
     return inventory
 
 def display_inventory(inventory):
