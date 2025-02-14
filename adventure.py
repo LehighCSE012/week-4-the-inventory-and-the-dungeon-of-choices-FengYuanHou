@@ -2,14 +2,17 @@
 import random
 
 def display_player_status(player_health):
+    """Prints player's current health."""
     print(f"Your current health: {player_health}")
 
 def acquire_item(inventory, item):
+    """Adds an item to the inventory and prints a message."""
     inventory.append(item)
-    print(f"You found a {item} in the room.")
+    print(f"You acquired a {item}!")
     return inventory
 
 def display_inventory(inventory):
+    """Displays the player's inventory."""
     if not inventory:
         print("Your inventory is empty.")
     else:
@@ -18,34 +21,41 @@ def display_inventory(inventory):
             print(f"{i}. {item}")
 
 def enter_dungeon(player_health, inventory, dungeon_rooms):
-    for description, item, challenge_type, outcome in dungeon_rooms:
-        print(f"You enter: {description}")
+    """Handles dungeon exploration including item acquisition and challenges."""
+    for desc, item, challenge_type, outcome in dungeon_rooms:
+        print(f"You enter: {desc}")
         if item:
             acquire_item(inventory, item)
         if challenge_type == "none":
             print("There doesn't seem to be a challenge in this room. You move on.")
+        elif challenge_type == "trap":
+            print("You see a potential trap!")
+            action = input("Do you want to disarm or bypass it? ").lower()
         else:
-            action = input(f"You encounter a {challenge_type}! Do you want to solve/disarm or skip/bypass it? ").lower()
-            if action in ["solve", "disarm"]:
-                success = random.choice([True, False])
-                print(outcome[0] if success else outcome[1])
-                player_health = max(player_health + outcome[2], 0)
-                if player_health == 0:
-                    print("You are barely alive!")
-            else:
-                print("You chose to avoid the challenge.")
+            action = input("You encounter a challenge! Solve or skip? ").lower()
+
+        if action in ["solve", "disarm"]:
+            success = random.choice([True, False])
+            print(outcome[0] if success else outcome[1])
+            player_health = max(player_health + outcome[2], 0)
+            if player_health == 0:
+                print("You are barely alive!")
+        else:
+            print("You chose to avoid the challenge.")
+
         display_inventory(inventory)
     display_player_status(player_health)
     return player_health, inventory
 
 def main():
+    """Main function to initialize game variables and start the adventure."""
     player_health = 100
     inventory = []
     dungeon_rooms = [
-        ("A dusty old library", "key", "puzzle", ("Puzzle solved!", "Puzzle failed!", -5)),
-        ("A narrow passage with a creaky floor", None, "trap", ("Trap disarmed!", "You triggered the trap!", -10)),
-        ("A grand hall with a shimmering pool", "healing potion", "none", None),
-        ("A small room with a locked chest", "treasure", "puzzle", ("Chest opened!", "Chest locked!", -5))
+        ("A dusty library", "key", "puzzle", ("Puzzle solved!", "Puzzle failed!", -5)),
+        ("A creaky floor passage", None, "trap", ("Trap disarmed!", "You triggered the trap!", -10)),
+        ("A shimmering pool hall", "potion", "none", None),
+        ("A locked chest room", "treasure", "puzzle", ("Chest opened!", "Chest locked!", -5))
     ]
     player_health, inventory = enter_dungeon(player_health, inventory, dungeon_rooms)
     try:
