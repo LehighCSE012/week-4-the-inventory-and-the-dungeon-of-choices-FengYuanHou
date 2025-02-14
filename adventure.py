@@ -21,6 +21,7 @@ def display_inventory(inventory):
             print(f"{i}. {item}")
 
 def enter_dungeon(player_health, inventory, dungeon_rooms):
+    """Handles dungeon exploration including item acquisition and challenges."""
     for desc, item, challenge_type, outcome in dungeon_rooms:
         print(f"You enter: {desc}")
         if item:
