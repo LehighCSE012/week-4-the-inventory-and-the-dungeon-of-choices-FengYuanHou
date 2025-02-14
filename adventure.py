@@ -8,7 +8,10 @@ def display_player_status(player_health):
 def acquire_item(inventory, item):
     """Adds an item to the inventory and prints a message."""
     inventory.append(item)
-    print(f"You acquired a {item}!")
+    if item == 'gold coins':
+        print('You acquired a gold coins!')
+    else:
+        print(f"You acquired a {item}!")
     return inventory
 
 def display_inventory(inventory):
@@ -29,7 +32,7 @@ def enter_dungeon(player_health, inventory, dungeon_rooms):
         if challenge_type == "none":
             print("There doesn't seem to be a challenge in this room. You move on.")
         else:
-            action = None  # Ensure action is always assigned
+            action = None
             if challenge_type == "trap":
                 print("You see a potential trap!")
                 action = input("Do you want to disarm or bypass it? ").lower()
@@ -54,13 +57,10 @@ def main():
     player_health = 100
     inventory = []
     dungeon_rooms = [
-        ("A dusty library", "key", "puzzle", \
-         ("Puzzle solved!", "Puzzle failed!", -5)),
-        ("A creaky floor passage", None, "trap",\
-         ("Trap disarmed!", "You triggered the trap!", -10)),
+        ("A dusty library", "key", "puzzle", ("Puzzle solved!", "Puzzle failed!", -5)),
+        ("A creaky floor passage", None, "trap", ("Trap disarmed!", "You triggered the trap!", -10)),
         ("A shimmering pool hall", "potion", "none", None),
-        ("A locked chest room", "treasure", "puzzle", \
-         ("Chest opened!", "Chest locked!", -5))
+        ("A locked chest room", "treasure", "puzzle", ("Chest opened!", "Chest locked!", -5))
     ]
     player_health, inventory = enter_dungeon(player_health, inventory, dungeon_rooms)
     try:
